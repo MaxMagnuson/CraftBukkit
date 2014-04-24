@@ -11,7 +11,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 
 import java.util.Random;
 
-public class SaplingHelper {
+public class SproutSapling {
 
     private int i;
     private int i1 = 0;
@@ -27,7 +27,7 @@ public class SaplingHelper {
     private boolean flag = false;
     private BlockSapling sapling;
 	
-    public SaplingHelper(int tempI, int tempJ, int tempK, World tempWorld, int tempType, Player tempPlayer, BlockSapling tempSapling){
+    public SproutSapling(int tempI, int tempJ, int tempK, World tempWorld, int tempType, Player tempPlayer, BlockSapling tempSapling){
         i = tempI;
         j = tempJ;
         k = tempK;
