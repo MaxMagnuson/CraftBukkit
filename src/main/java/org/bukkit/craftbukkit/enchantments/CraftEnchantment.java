@@ -1,5 +1,9 @@
 package org.bukkit.craftbukkit.enchantments;
 
+import java.util.HashMap;
+
+import net.minecraft.server.EnchantmentSlotType;
+
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -8,6 +12,49 @@ import org.bukkit.inventory.ItemStack;
 
 public class CraftEnchantment extends Enchantment {
     private final net.minecraft.server.Enchantment target;
+    private static final HashMap<String, EnchantmentTarget> slotTarget = 
+            new HashMap<String, EnchantmentTarget>();
+    static
+    {
+        slotTarget.put("ALL", EnchantmentTarget.ALL);
+        slotTarget.put("ARMOR", EnchantmentTarget.ARMOR);
+        slotTarget.put("ARMOR_FEET", EnchantmentTarget.ARMOR_FEET);
+        slotTarget.put("ARMOR_HEAD", EnchantmentTarget.ARMOR_HEAD);
+        slotTarget.put("ARMOR_LEGS", EnchantmentTarget.ARMOR_LEGS);
+        slotTarget.put("ARMOR_TORSO", EnchantmentTarget.ARMOR_TORSO);
+        slotTarget.put("DIGGER", EnchantmentTarget.TOOL);
+        slotTarget.put("WEAPON", EnchantmentTarget.WEAPON);
+        slotTarget.put("BOW", EnchantmentTarget.BOW);
+        slotTarget.put("FISHING_ROD", EnchantmentTarget.FISHING_ROD);
+    }
+    private static final HashMap<Integer, String> nameMap = new HashMap<Integer, String>();
+    static
+    {
+        nameMap.put(0, "PROTECTION_ENVIRONMENTAL");
+        nameMap.put(1, "PROTECTION_FIRE");
+        nameMap.put(2, "PROTECTION_FALL");
+        nameMap.put(3, "PROTECTION_EXPLOSIONS");
+        nameMap.put(4, "PROTECTION_PROJECTILE");
+        nameMap.put(5, "OXYGEN");
+        nameMap.put(6, "WATER_WORKER");
+        nameMap.put(7, "THORNS");
+        nameMap.put(16, "DAMAGE_ALL");
+        nameMap.put(17, "DAMAGE_UNDEAD");
+        nameMap.put(18, "DAMAGE_ARTHROPODS");
+        nameMap.put(19, "KNOCKBACK");
+        nameMap.put(20, "FIRE_ASPECT");
+        nameMap.put(21, "LOOT_BONUS_MOBS");
+        nameMap.put(32, "DIG_SPEED");
+        nameMap.put(33, "SILK_TOUCH");
+        nameMap.put(34, "DURABILITY");
+        nameMap.put(35, "LOOT_BONUS_BLOCKS");
+        nameMap.put(48, "ARROW_DAMAGE");
+        nameMap.put(49, "ARROW_KNOCKBACK");
+        nameMap.put(50, "ARROW_FIRE");
+        nameMap.put(51, "ARROW_INFINITE");
+        nameMap.put(61, "LUCK");
+        nameMap.put(62, "LURE");
+    }
 
     public CraftEnchantment(net.minecraft.server.Enchantment target) {
         super(target.id);
@@ -26,30 +73,8 @@ public class CraftEnchantment extends Enchantment {
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        switch (target.slot) {
-        case ALL:
-            return EnchantmentTarget.ALL;
-        case ARMOR:
-            return EnchantmentTarget.ARMOR;
-        case ARMOR_FEET:
-            return EnchantmentTarget.ARMOR_FEET;
-        case ARMOR_HEAD:
-            return EnchantmentTarget.ARMOR_HEAD;
-        case ARMOR_LEGS:
-            return EnchantmentTarget.ARMOR_LEGS;
-        case ARMOR_TORSO:
-            return EnchantmentTarget.ARMOR_TORSO;
-        case DIGGER:
-            return EnchantmentTarget.TOOL;
-        case WEAPON:
-            return EnchantmentTarget.WEAPON;
-        case BOW:
-            return EnchantmentTarget.BOW;
-        case FISHING_ROD:
-            return EnchantmentTarget.FISHING_ROD;
-        default:
-            return null;
-        }
+    	return slotTarget.get(target.slot.toString());
+  
     }
 
     @Override
@@ -59,58 +84,11 @@ public class CraftEnchantment extends Enchantment {
 
     @Override
     public String getName() {
-        switch (target.id) {
-        case 0:
-            return "PROTECTION_ENVIRONMENTAL";
-        case 1:
-            return "PROTECTION_FIRE";
-        case 2:
-            return "PROTECTION_FALL";
-        case 3:
-            return "PROTECTION_EXPLOSIONS";
-        case 4:
-            return "PROTECTION_PROJECTILE";
-        case 5:
-            return "OXYGEN";
-        case 6:
-            return "WATER_WORKER";
-        case 7:
-            return "THORNS";
-        case 16:
-            return "DAMAGE_ALL";
-        case 17:
-            return "DAMAGE_UNDEAD";
-        case 18:
-            return "DAMAGE_ARTHROPODS";
-        case 19:
-            return "KNOCKBACK";
-        case 20:
-            return "FIRE_ASPECT";
-        case 21:
-            return "LOOT_BONUS_MOBS";
-        case 32:
-            return "DIG_SPEED";
-        case 33:
-            return "SILK_TOUCH";
-        case 34:
-            return "DURABILITY";
-        case 35:
-            return "LOOT_BONUS_BLOCKS";
-        case 48:
-            return "ARROW_DAMAGE";
-        case 49:
-            return "ARROW_KNOCKBACK";
-        case 50:
-            return "ARROW_FIRE";
-        case 51:
-            return "ARROW_INFINITE";
-        case 61:
-            return "LUCK";
-        case 62:
-            return "LURE";
-        default:
-            return "UNKNOWN_ENCHANT_" + target.id;
-        }
+    	if(nameMap.get(target.id)==null){
+    		return "UNKNOWN_ENCHANT_" + target.id;
+    	} else {
+    		return nameMap.get(target.id);
+    	}
     }
 
     public static net.minecraft.server.Enchantment getRaw(Enchantment enchantment) {
